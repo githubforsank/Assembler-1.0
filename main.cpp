@@ -250,7 +250,8 @@ void Assembler::view()
 			}
 			if(ch==EOF)
 			break;
-		
+		//Hey deres
+		//Ba
 		}
 	}
 }
