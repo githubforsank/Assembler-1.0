@@ -99,4 +99,6 @@
     <File Name="Debug/source.txt"/>
     <File Name="Debug/I.txt"/>
   </VirtualDirectory>
+  <Dependencies Name="Debug"/>
+  <Dependencies Name="Release"/>
 </CodeLite_Project>
