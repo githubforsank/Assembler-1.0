@@ -155,105 +155,39 @@ void Assembler::view()
 	
 }
 
- void Assembler::convert()
+void Assembler::convert()
 {
 	ofstream out;
 	ifstream in;
 	in.open("source.txt");
 	if(!in)
 		cout<<"Internal Error Handler \nFailed to open the source file. Check directory structure or permission \n";
-	char SYMBOL[8];
+	string SYMBOL;
 	char INSTRUCTION[5];
 	char OPERAND[10];
+	string WORD1,WORD2,WORD3;
+	char line[20];
 	int lineNo=0;;;;;;
 	int OPERAND_LENGTH=1;
+	
 	//SOURCE CODE FORMATTER	
 		//**************************************************
 		//**************************************************
 		cout<<"RAW FILE: \n";
 		//**************************************************
 		//**************************************************
-	int wc=1;
-	int p=0;
-	while(1)
-	{
-		
-		char ch=in.get();
-		
-		//cout<<ch;
-		if(ch==' ' &&  p ==0)
+		int count=0;
+		char WORD[10];
+		int i=0;
+		char lastchar;
+		while(in.getline(line,25))
 		{
-			cout<<"Space in Indentation not allowed. line no :"<<lineNo+1;
-			exit(99);
+			
 		}
-		if(p<=7 && wc==1)
-		{
-			if(ch ==' ')
-			{
-				wc=2;
-				SYMBOL[p]='\0';
-			}
-			else
-			{
-				SYMBOL[p]=ch;
-				p++;
-			}
-		}
-		else 
-		{
-			p=0;
-		}
-		if(p<5 && wc ==2)
-		{
-			if(ch==' ')
-			{
-				wc=3;
-				INSTRUCTION[p]='\0';
-			}
-			else
-			{
-				INSTRUCTION[p]=ch;
-				p++;
-				
-			}
-		}
-		else
-			p=0;
-		if(p<8 && wc ==3)
-		{
-			if(ch=='\n' || ch==' ')
-			{
-				wc=1;
-				INSTRUCTION[p]='\0';
-			}
-			else
-				{
-					INSTRUCTION[p]=ch;
-				p++;
-				}
-		}	
-		else
-			p=0;
-		//operate(SYMBOL,INSTRUCTION,OPERAND,findOperandLength(OPERAND),lineNo);
-		if(ch=='\n' || ch==EOF)
-		{
-			lineNo++;
-			//Printing stored values;
-			cout<<"\nSYMBOL :"<<SYMBOL;
-			cout<<"\nINSTRUCTION :"<<INSTRUCTION;
-			cout<<"\nOPERAND :"<<OPERAND;
-			for(int i=0;i<10;i++)
-			{
-				SYMBOL[i]=' ';
-				INSTRUCTION[i]=' ';
-				OPERAND[i]=' ';
-			}
-			if(ch==EOF)
-			break;
-		//Hey deres
-		//Ba
-		}
-	}
+		//cout<<"count :"<<count<<endl;
+	int a;
+	cin>>a;
+	
 }
 	
 
