@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Sasank Sekhar Panda
-Date                   :=26/03/17
+Date                   :=29/03/17
 CodeLitePath           :="/home/sasank/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -41,7 +41,7 @@ IncludePCH             :=
 RcIncludePath          := 
 Libs                   := 
 ArLibs                 :=  
-LibPath                :=$(LibraryPathSwitch)"-lGLU -lGL -lglut"  $(LibraryPathSwitch). 
+LibPath                :=$(LibraryPathSwitch)"GLU GL glut"  $(LibraryPathSwitch). 
 
 ##
 ## Common variables

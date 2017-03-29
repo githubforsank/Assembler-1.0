@@ -1,3 +1,5 @@
 JOHN	START	0
-	HELLO	9
 FIVE	DC	F'1,2,3,4'
+		HOT	51
+		BASIC	SEt
+		Hello	26

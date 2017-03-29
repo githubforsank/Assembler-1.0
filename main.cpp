@@ -9,10 +9,10 @@ using namespace std;
 
 struct MOT
 {
-	char mnemonics[4];
-	char opcode;
-	char instruction[2];
-	char format[3];
+	char mnemonics[4];//Characters
+	char opcode[2];//Hexadecimal
+	char instruction[2];//Binary
+	char format[3];//Instruction format in binary.
 
 };
 struct POT
@@ -23,14 +23,14 @@ struct POT
 struct SYMBOL
 {
 		char symbol[8];
-		int value;
-		char length;
+		int value;//AKA RELATIVE ADDRESS
+		int length;
 		bool relocation;
 };
 struct LITERAL
 {
 		char symbol[8];
-		char value[4];
+		char value;
 		char length;
 		bool relocation;
 };
@@ -42,7 +42,7 @@ public:
 	Assembler();
 	 void addMOT();
 	 void addPOT();
-	 void addSOT(string,int,int,bool);
+	 void addSOT(SYMBOL,int,int);
 	 void view();
 	 int findOperandLength(string);
 	 void Init();
@@ -50,11 +50,11 @@ public:
 	 void convert();
 	 
 };
+
 Assembler::Assembler()
 {
-	Init();
+	
 }
-
 void Assembler::Init()
 {
 	
@@ -79,6 +79,7 @@ void Assembler::view()
 	int j=0;
 	int k=0;
 	int l=0;
+	int z=0;
 	for(int i=0;i<10;i++)
 	{
 		if(i<4)
@@ -86,11 +87,12 @@ void Assembler::view()
 			m.mnemonics[j]=stream[i];
 			j++;
 		}
-		else if(i<5)
+		else if(i<6)
 		{
-			m.opcode=stream[i];
+			m.opcode[z]=stream[i];
+			z++;
 		}
-		else if(i<7)
+		else if(i<8)
 		{
 			m.instruction[k]=stream[i];
 
@@ -103,7 +105,6 @@ void Assembler::view()
 		}
 	}
 	cout<<m.instruction<<" "<<m.opcode<<" "<<m.instruction<<" "<<m.format;
-	
 	in.close();
 
 	
@@ -121,7 +122,7 @@ void Assembler::view()
 	cout<<"Mnemonic[4]: ";
 	cin>>m.mnemonics;
 	out<<m.mnemonics;
-	cout<<"\nBinary Op Code[1] :";
+	cout<<"\nBinary Op Code[2] :";
 	cin>>m.opcode;
 	out<<m.opcode;
 	cout<<"\nInstruction Length[2] :";
@@ -155,19 +156,84 @@ void Assembler::view()
 	
 }
 
-void Assembler::convert()
+void Assembler::addSOT(SYMBOL s,int address_aka_value,int length)
 {
+	ofstream out;
+	out.open("SOT.txt",ios::app);
+	if(!out)
+		cout<<"\nError opening SOT file. Please check directory structure or permission";
+	
+	
+	
+	out.close();
+}
+
+
+int search(string word)
+{
+	//Module that searches for the machine operation in the machine operation table
+	cout<<"\n++++++"<<word<<endl;
+	ifstream in;
+	in.open("MOT.txt");
+	if(!in)
+		{
+			cout<<"\nError opening MOT file in search.";
+			exit(39);
+		}
+	MOT m;
+	for(int i=0;i<4;i++)
+	{
+		if(word[i]!='\0')
+			m.mnemonics[i]=word[i];
+		else
+		{
+			for(int j=i;j<4;j++)
+			{
+				m.mnemonics[j]='b';
+			}
+			break;
+		}
+	}
+	cout<<"LOOK HERE "<<m.mnemonics;
+	char line[12];
+	while(in.getline(line,12))
+	{
+		//cout<<"\nLOOK HERE"<<line;
+		
+	}
+	
+	/*for(int i=0;i<11;i++)
+	{
+		if(word[i]=='\0')
+		{
+			for(int j=i;j<11;j)
+		}
+		m.mnemonics[i]=word[i];
+		
+	}*/
+	
+	in.close();
+		
+}
+void Assembler::convert()
+{	
+	int _base;
+	cout<<"\nEnter the value of the base register :";
+	cin>>_base;
+	
 	ofstream out;
 	ifstream in;
 	in.open("source.txt");
+	out.open("I.txt");
 	if(!in)
 		cout<<"Internal Error Handler \nFailed to open the source file. Check directory structure or permission \n";
-	string SYMBOL;
-	char INSTRUCTION[5];
-	char OPERAND[10];
-	string WORD1,WORD2,WORD3;
+	if(!out)
+		cout<<"Internal Error Handler \nFailed to open the Intermediate file. Check directory structure or permission \n";
+
+	
 	char line[20];
 	int lineNo=0;;;;;;
+	int rel_location=0;
 	int OPERAND_LENGTH=1;
 	
 	//SOURCE CODE FORMATTER	
@@ -177,17 +243,75 @@ void Assembler::convert()
 		//**************************************************
 		//**************************************************
 		int count=0;
-		char WORD[10];
 		int i=0;
 		char lastchar;
+		string word1,word2,word3;
 		while(in.getline(line,25))
 		{
+			SYMBOL S;
+			lineNo++;
+			count=0;
+			for(int i=0;line[i]!='\n' && i<25;i++)
+			{
+				if(line[i]=='\t')
+					count++;
+			}
+			if(count !=2 && count!=3)
+			{
+				cout<<"\nError : No of arguements in line no \n"<<lineNo;
+				exit(29);
+			}
+
+			else
+			{
+					istringstream ss(line);
+					if(count==3)
+						{
+							ss>>word2>>word3;
+							word1="NULL";
+						}
+						
+					else
+						ss>>word1>>word2>>word3;
+			}
+			//DEBUG..............................
+			cout<<word1<<" "<<word2<<" "<<word3;
+			cout<<" count: "<<count<<endl;
+			//...................................
+			
+			if(word1!="NULL")
+			{
+				for(int i=0;i<8;i++)
+				{
+					if(word1[i]!='\0')
+						S.symbol[i]=word1[i];
+					else
+					{
+						for(int j=i;j<8;j++)
+							S.symbol[j]='0';
+						break;
+					}
+						
+				}
+			}
+			S.length=findOperandLength(word3);
+			S.value=rel_location;
+			//cout<<"\nDEBUG NOW"<<S.length;
+			if(search(word2))
+			{
+				//Here ---->>>>>>>>>>
+			}
+			else
+			{
+				cout<<"\nNo such Machine Operation Found at line no :"<<lineNo<<"\nTerminating..";
+				exit(29);
+			}
+			
+			
 			
 		}
-		//cout<<"count :"<<count<<endl;
-	int a;
-	cin>>a;
 	
+		
 }
 	
 
@@ -203,11 +327,6 @@ int Assembler::findOperandLength(string OPERAND)
 			count++;
 	}
 	return count+1;
-}
-void Assembler::addSOT(string SYMBOL,int lineNo,int length,bool Relocation)
-{
-	ofstream out;
-	out.open("SOT.txt",ios::app);
 }
 void Assembler::operate(string SYMBOL,string INSTRUCTION,string OPERAND,int OPERAND_LENGTH,int lineNo)
 {
